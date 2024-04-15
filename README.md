@@ -11,13 +11,18 @@ El proyecto está estructurado en múltiples servicios, cada uno hubicado en su 
 
 - ### Service Discovery (discovery-service):
   Utiliza Eureka Server para el registro y la localización de servicios dentro de la infraestructura de microservicios.
+  Ayuda del discovery automático de servicios que estén registrados en la configuración.
 - ### API Gateway (gateway-service):
-  Actúa como un punto de entrada unificado para los servicios, manejando la autenticación, autorización y enrutamiento a los diferentes servicios.
+  Actúa como un punto de entrada unificado para los servicio.
+  Todas las solicitudes de los endpoints de cada servicio pasan por el gateway, protegiéndo los demás servicios tras esta capa.
+  (localhost:8060/serviceName/**)
   Utiliza Keycloack para la autentificación de usuarios y el manejo de SCOPES de clientes.
 - ### Config Service (config-service):
   Gestiona la configuración externa de los servicios con Spring Cloud Config.
+  Todas las configuraciones se cargan desde la carpeta "config" dentro del servicio config.
 - ### Product Service (product-service):
-  Maneja las operaciones relacionadas con productos, almacenando en cache con Redis.
+  Maneja las operaciones relacionadas con productos.
+  Utilizamos REDIS para guardar las respuestas de los endpoints en el caché, hasta que haya un cambio (POST, UPDATE, DELETE) y se eliminen para cargar la nueva información.
 - ### Category Service (category-service):
   Encargado de las operaciones relacionadas con categorías de productos.
 - ### Inventory Service (inventory-service):
@@ -66,7 +71,7 @@ dinámica, es decir, que se pueda filtrar por cualquier propiedad del producto d
 
 * El calculador de impuestos es funcional, pero no esta terminado de estar integrado para que funcione con cualquier precio de los productos.
 
-
+En proceso de documentar mis decisiones de arquitectura, problemas encontrados y soluciones aplicadas, junto con todas las referencias que utilicé para construir el proyecto. STAND BY
 #### Algunos ejemplos mientras termino de documentar todo...
 
 ![keycloacklogin](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/e2c876bc-ede8-424f-9e28-be0c59a6e9a1)
