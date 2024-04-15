@@ -3,35 +3,38 @@
 (Desarrollado para la prueba técnica de DEKRA)
 
 ## What is this? 🏃
-QuickProd es una combinación de los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
+QuickProd combina los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
 Ha sido diseñada para facilitar la expansión y mantenimiento al segregarse en servicios distintos, cada uno con su responsabilidad específica dentro de la arquitectura global.
+
 
 ## Project Structure
 El proyecto está estructurado en múltiples servicios, cada uno hubicado en su propio subdirectorio dentro del repositorio principal. Los servicios incluidos son:
 
 - ### Service Discovery (discovery-service):
-  Utiliza Eureka Server para el registro y la localización de servicios dentro de la infraestructura de microservicios.
-  Ayuda del discovery automático de servicios que estén registrados en la configuración.
+  Utiliza [Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html) para el registro y la localización de servicios dentro de la infraestructura de microservicios.
 - ### API Gateway (gateway-service):
   Actúa como un punto de entrada unificado para los servicio.
-  Todas las solicitudes de los endpoints de cada servicio pasan por el gateway, protegiéndo los demás servicios tras esta capa.
+  Todas las solicitudes de los endpoints a cada servicio provienen del gateway, protegiéndo los demás servicios tras esta capa.
+  Utilizamos propagacion del token desde el gateway hasta el resto de servicios.
+  Ayuda del LB automático de servicios que estén registrados en la configuración (Sección routes en [gateway-service.yml](https://github.com/AdrianAlonsoDev/dekra-qp/blob/main/config-service/src/main/resources/config/gateway-service.yml).
   (localhost:8060/serviceName/**)
   Utiliza Keycloack para la autentificación de usuarios y el manejo de SCOPES de clientes.
 - ### Config Service (config-service):
   Gestiona la configuración externa de los servicios con Spring Cloud Config.
-  Todas las configuraciones se cargan desde la carpeta "config" dentro del servicio config.
+  Todas las configuraciones se cargan desde la carpeta ["config"](https://github.com/AdrianAlonsoDev/dekra-qp/tree/main/config-service/src/main/resources/config) dentro del servicio config.
 - ### Product Service (product-service):
-  Maneja las operaciones relacionadas con productos.
-  Utilizamos REDIS para guardar las respuestas de los endpoints en el caché, hasta que haya un cambio (POST, UPDATE, DELETE) y se eliminen para cargar la nueva información.
+  Maneja las operaciones relacionadas con productos, almacenando los datos en cache con Redis. Pese a que contiene ID de category e inventory, no habrá problema por iniciarlo individualmente.
 - ### Category Service (category-service):
-  Encargado de las operaciones relacionadas con categorías de productos.
+  Encargado de las operaciones relacionadas con categorías de productos, también con caché en Redis.
 - ### Inventory Service (inventory-service):
-  Controla las funcionalidades relacionadas con el inventario y la gestión de stock.
+  Controla las funcionalidades relacionadas con el inventario o werehouses
 
-Todos los servicios tienen sus responsabilidades separadas,excepto en algún posible usecase por corregir, deberían de funcionar individualmente aunque falten datos de los demás servicios.
+Todos los servicios tienen sus responsabilidades separadas, excepto en algún posible usecase por corregir, funcionarán individualmente.
+Utilizamos [FeignClients](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-feign.html) para la inter comunicación de los servicios.
 
 ## Installation 🛠️
-- Instalar Docker y Docker Compose.
+- Instalar Docker y Docker Compose para levantar: Keycloack, Redis, ZIPKIN
+- JDK 17
 
 ## Run the project
 Para ejecutar el proyecto, sigue estos pasos:
@@ -64,8 +67,15 @@ Para acceder a un contenedor, utiliza el comando:
 
 * Para salir usa, `exit`
 
-Puntos de la prueba técnica restantes por realizar:
 
+Roadmap:
+- Crud de productos. (Localizado en product-service) ✅
+- Todas las requests HTTP necesitan antes ser autenticadas con Keycloack. (Inclusive, el token debe ser emitido con el SCOPE_manager para acceder a los endpoints) ✅
+- Los datos de product, category e inventory son almacenados en memoria H2, utilizando Redis como caché, con previsión de cambiar a una real en producción. ✅
+- Aspecto en cada servicio del dominio para loggear el tiempo de cada método, avisando según ms el tipo de alerta (INFO, WARN, ERROR) ✅
+- Calculadora de impuestos por configuracion funcional, pero todavía no está integrado para aplicar a todos los precios de los productos. 🆗
+
+ Puntos de la prueba técnica restantes por realizar:
 * (Opcional) Desarrollar un endpoint para la obtención de los productos mediante una “query”
 dinámica, es decir, que se pueda filtrar por cualquier propiedad del producto de forma dinámica.
 
