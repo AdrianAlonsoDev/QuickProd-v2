@@ -7,16 +7,18 @@ QuickProd combina los elementos y recursos más utilizados, permitiendonos así 
 Ha sido diseñada para facilitar la expansión y mantenimiento al segregarse en servicios distintos, cada uno con su responsabilidad específica dentro de la arquitectura global.
 
 
-## Project Structure
+## Service Architechture
+![Captura de pantalla 2024-04-15 120255](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f)
+
 El proyecto está estructurado en múltiples servicios, cada uno hubicado en su propio subdirectorio dentro del repositorio principal. Los servicios incluidos son:
 
 - ### Service Discovery (discovery-service):
   Utiliza [Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html) para el registro y la localización de servicios dentro de la infraestructura de microservicios.
 - ### API Gateway (gateway-service):
-  Actúa como un punto de entrada unificado para los servicio.
-  Todas las solicitudes de los endpoints a cada servicio provienen del gateway, protegiéndo los demás servicios tras esta capa.
-  Utilizamos propagacion del token desde el gateway hasta el resto de servicios.
-  Ayuda del LB automático de servicios que estén registrados en la configuración (Sección routes en [gateway-service.yml](https://github.com/AdrianAlonsoDev/dekra-qp/blob/main/config-service/src/main/resources/config/gateway-service.yml).
+  * Actúa como un punto de entrada unificado para los servicio.
+  * Todas las solicitudes de los endpoints a cada servicio provienen del gateway, protegiéndo los demás servicios tras esta capa.
+  * Utilizamos propagacion del token desde el gateway hasta el resto de servicios.
+  * Ayuda del LB automático de servicios que estén registrados en la configuración (Sección routes en [gateway-service.yml](https://github.com/AdrianAlonsoDev/dekra-qp/blob/main/config-service/src/main/resources/config/gateway-service.yml).
   (localhost:8060/serviceName/**)
   Utiliza Keycloack para la autentificación de usuarios y el manejo de SCOPES de clientes.
 - ### Config Service (config-service):
