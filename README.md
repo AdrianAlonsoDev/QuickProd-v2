@@ -1,5 +1,5 @@
 ## DEKRA-QP 🚀
-## DEKRA QuickProd es una suite de servicios que permite maximizar la eficiencia en la gestión de productos en diferentes contextos.
+## QuickProd es una suite de servicios que permite maximizar la eficiencia en la gestión de productos en diferentes contextos.
 (Desarrollado para la prueba técnica de DEKRA)
 
 ## What is this? 🏃
