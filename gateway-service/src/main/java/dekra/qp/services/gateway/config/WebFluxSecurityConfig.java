@@ -23,25 +23,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableReactiveMethodSecurity
 public class WebFluxSecurityConfig {
 
-//    @Bean
-//    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-//        http.authorizeExchange(authorize -> authorize
-//                        .pathMatchers("/v3/api-docs/**", "/swagger-ui/**", "/webjars/**", "/swagger-resources/**").permitAll()  // Permitir acceso a Swagger UI y definiciones de API sin autenticación
-//                        .pathMatchers(HttpMethod.GET, "/product/v3/api-docs/**").authenticated()
-//                        .pathMatchers(HttpMethod.GET, "/category/v3/api-docs/**").authenticated()
-//                        .pathMatchers(HttpMethod.GET, "/inventory/v3/api-docs/**").authenticated()
-//                        .pathMatchers("/inventory/**").hasAuthority("SCOPE_manager")
-//                        .pathMatchers("/category/**").hasAuthority("SCOPE_manager")
-//
-//                        .anyExchange().authenticated())
-//                .oauth2Login(withDefaults())
-//                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
-//
-//        http.csrf(ServerHttpSecurity.CsrfSpec::disable);
-//
-//        return http.build();
-//    }
-
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange(auth -> auth
@@ -71,14 +52,5 @@ public class WebFluxSecurityConfig {
         source.registerCorsConfiguration("/**", config);
 
         return new CorsWebFilter(source);
-    }
-
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .addServersItem(new Server().url("http://localhost:8060").description("API Gateway"))
-                .info(new Info().title("API Gateway")
-                        .version("v1")
-                        .description("This is the gateway for all microservices"));
     }
 }
