@@ -34,6 +34,8 @@ El proyecto está estructurado en múltiples servicios, cada uno hubicado en su 
 Todos los servicios tienen sus responsabilidades separadas, excepto en algún posible usecase por corregir, funcionarán individualmente.
 Utilizamos [FeignClients](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-feign.html) para la inter comunicación de los servicios.
 
+![Captura de pantalla 2024-04-15 120942](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/3858e1fc-4f70-4b9a-98d2-87fc259193e9)
+
 ## Installation 🛠️
 - Instalar Docker y Docker Compose para levantar: Keycloack, Redis, ZIPKIN
 - JDK 17
