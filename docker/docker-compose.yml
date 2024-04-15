@@ -9,7 +9,7 @@ services:
     container_name: dekra-QPkeycloak
     restart: "no"
     ports:
-      - "8080:8080" # Changing this port because 8080 is usually the default for the quarkus app
+      - "8080:8080"
     volumes:
       - ./realm-export/qprealm-export.json:/opt/keycloak/data/import/qprealm-export.json
     environment:
