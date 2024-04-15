@@ -23,12 +23,31 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableReactiveMethodSecurity
 public class WebFluxSecurityConfig {
 
+//    @Bean
+//    public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
+//        http.authorizeExchange(authorize -> authorize
+//                        .pathMatchers("/v3/api-docs/**", "/swagger-ui/**", "/webjars/**", "/swagger-resources/**").permitAll()  // Permitir acceso a Swagger UI y definiciones de API sin autenticación
+//                        .pathMatchers(HttpMethod.GET, "/product/v3/api-docs/**").authenticated()
+//                        .pathMatchers(HttpMethod.GET, "/category/v3/api-docs/**").authenticated()
+//                        .pathMatchers(HttpMethod.GET, "/inventory/v3/api-docs/**").authenticated()
+//                        .pathMatchers("/inventory/**").hasAuthority("SCOPE_manager")
+//                        .pathMatchers("/category/**").hasAuthority("SCOPE_manager")
+//
+//                        .anyExchange().authenticated())
+//                .oauth2Login(withDefaults())
+//                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+//
+//        http.csrf(ServerHttpSecurity.CsrfSpec::disable);
+//
+//        return http.build();
+//    }
+
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange(auth -> auth
                         .pathMatchers("/v3/api-docs/**", "/swagger-ui/**", "/webjars/**", "/swagger-resources/**", "/favicon.ico").permitAll()
                         // Configurar acceso autenticado para la documentación API de cada servicio
-                        //.pathMatchers(HttpMethod.GET, "/product/v3/api-docs/**", "/inventory/v3/api-docs/**", "/category/v3/api-docs/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/product/v3/api-docs/**", "/inventory/v3/api-docs/**", "/category/v3/api-docs/**").permitAll()
                         // Control de acceso para operaciones normales
                         .pathMatchers("/product/**").hasAuthority("SCOPE_manager")
                         .pathMatchers("/inventory/**").hasAuthority("SCOPE_manager")

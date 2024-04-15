@@ -37,8 +37,12 @@ public class GatewayApplication {
 		SpringApplication.run(GatewayApplication.class, args);
 	}
 
+	private final RouteDefinitionLocator locator;
+
 	@Autowired
-	RouteDefinitionLocator locator;
+	public GatewayApplication(RouteDefinitionLocator locator) {
+		this.locator = locator;
+	}
 
 	/*
 	 * Get the route definitions from the gateway
