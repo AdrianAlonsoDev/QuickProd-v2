@@ -77,13 +77,11 @@ Roadmap:
 - Todas las requests HTTP necesitan antes ser autenticadas con Keycloack. (Inclusive, el token debe ser emitido con el SCOPE_manager para acceder a los endpoints) ✅
 - Los datos de product, category e inventory son almacenados en memoria H2, utilizando Redis como caché, con previsión de cambiar a una real en producción. ✅
 - Aspecto en cada servicio del dominio para loggear el tiempo de cada método, avisando según ms el tipo de alerta (INFO, WARN, ERROR) ✅
-- Calculadora de impuestos por configuracion funcional, pero todavía no está integrado para aplicar a todos los precios de los productos. 🆗
 
  Puntos de la prueba técnica restantes por realizar:
+* Calculadora de impuestos por configuracion funcional, pero todavía no está integrado para aplicar a todos los precios de los productos. 🆗
 * (Opcional) Desarrollar un endpoint para la obtención de los productos mediante una “query”
 dinámica, es decir, que se pueda filtrar por cualquier propiedad del producto de forma dinámica.
-
-* El calculador de impuestos es funcional, pero no esta terminado de estar integrado para que funcione con cualquier precio de los productos.
 
 En proceso de documentar mis decisiones de arquitectura, problemas encontrados y soluciones aplicadas, junto con todas las referencias que utilicé para construir el proyecto. STAND BY
 #### Algunos ejemplos mientras termino de documentar todo...
