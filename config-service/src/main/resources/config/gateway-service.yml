@@ -1,0 +1,92 @@
+server:
+  port: 8060
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8061/eureka/
+
+logging:
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{traceId:-},%X{spanId:-}] ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web.reactive: DEBUG
+
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/qprealm/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/qprealm
+        registration:
+          qp-client:
+            provider: keycloak
+            client-id: qp-client
+            client-secret: N9nKkIST83cUM9bFfULq8SnzMYLfEAxs
+            authorization-grant-type: authorization_code
+            scope: openid
+
+  output:
+    ansi:
+      enabled: always
+  cloud:
+    gateway:
+      # Si no agregamos la propagación de Token,
+      # no podremos ver los servicios en el Swagger UI
+      default-filters:
+        - TokenRelay=
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: product-service
+        uri: lb://product-service
+        predicates:
+        - Path=/product/**
+        filters:
+        - RewritePath=/product/(?<path>.*), /$\{path}
+      - id: category-service
+        uri: lb://category-service
+        predicates:
+        - Path=/category/**
+        filters:
+        - RewritePath=/category/(?<path>.*), /$\{path}
+      - id: inventory-service
+        uri: lb://inventory-service
+        predicates:
+        - Path=/inventory/**
+        filters:
+        - RewritePath=/inventory/(?<path>.*), /$\{path}
+      - id: openapi
+        uri: http://localhost:${server.port}
+        predicates:
+        - Path=/v3/api-docs/**
+        filters:
+        - RewritePath=/v3/api-docs/(?<path>.*), /$\{path}/v3/api-docs
+      - id: swagger-ui
+        uri: http://localhost:${server.port}
+        predicates:
+          - Path=/
+        filters:
+          - RewritePath=/(?<path>.*), /swagger-ui.html
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: product
+        url: /v3/api-docs/product
+      - name: category
+        url: /v3/api-docs/category
+      - name: inventory
+        url: /v3/api-docs/inventory
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0

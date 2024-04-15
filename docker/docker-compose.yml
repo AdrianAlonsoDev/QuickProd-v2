@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  keycloak:
+    image: "quay.io/keycloak/keycloak:23.0.7"
+    command:
+      - start-dev
+      - --import-realm
+    container_name: dekra-QPkeycloak
+    restart: "no"
+    ports:
+      - "8080:8080" # Changing this port because 8080 is usually the default for the quarkus app
+    volumes:
+      - ./realm-export/qprealm-export.json:/opt/keycloak/data/import/qprealm-export.json
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+  redis:
+    image: redis:latest
+    container_name: dekra-redis
+    ports:
+      - "6379:6379"
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: dekra-zipkin
+    ports:
+      - "9411:9411"
