@@ -7,7 +7,7 @@ QuickProd combina los elementos y recursos más utilizados, permitiendonos así 
 Ha sido diseñada para facilitar la expansión y mantenimiento al segregarse en servicios distintos, cada uno con su responsabilidad específica dentro de la arquitectura global.
 
 
-## Project Architechture
+## Project Architecture
 ![Captura de pantalla 2024-04-15 120255](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f)
 
 El proyecto está estructurado en múltiples servicios, cada uno hubicado en su propio subdirectorio dentro del repositorio principal. Los servicios incluidos son:
