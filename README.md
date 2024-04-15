@@ -3,12 +3,19 @@
 *(Desarrollado para la prueba técnica DEKRA)*
 
 ## Que permite QuickProd? ⚡
-QuickProd combina los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
-Diseñada para facilitar la expansión y mantenimiento al segregarse en servicios distintos, cada uno con su responsabilidad dentro de la arquitectura global.
+Permite combinar los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
+
+Está estructurado como una arquitectura de microservicios utilizando Spring Boot, con servicios para manejar diferentes aspectos de dominio como productos, categorías y gestión de inventario.
+
+La arquitectura está diseñada para ser escalable, segura y eficiente, con un servidor de configuración central, un servidor de descubrimiento para el registro de servicios y una puerta de enlace API que dirige a los diferentes servicios.
 
 ## Project Architecture
-
-![Captura de pantalla 2024-04-15 120255](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f)
+<p align="center">
+  <img width="510" height="500" src="https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f">
+  </br>
+  Application Diagram
+</br>
+</p>
 
 El proyecto está estructurado en múltiples servicios, cada uno hubicado en su propio subdirectorio dentro del repositorio principal. Los servicios incluidos son:
 
