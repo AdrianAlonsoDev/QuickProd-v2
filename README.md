@@ -64,6 +64,9 @@ Lista de contenedores:
 -  dekra-redis (Almacenamiento en cache)
 -  dekra-zipkin (Evaluar las trazas)
 
+![Captura de pantalla 2024-04-15 121147](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/d6322037-4e9a-415a-9faa-00e4338eda3e)
+
+
 #### Acceder a los contenedores
 Para acceder a un contenedor, utiliza el comando:
 * `docker exec -it {nombre_del_contenedor} bash`
