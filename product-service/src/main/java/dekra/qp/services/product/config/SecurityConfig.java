@@ -19,12 +19,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        /**
+         * Configure the HttpSecurity to authorize all requests
+         * and validate the JWT token
+         */
         http.authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated())
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+                .oauth2ResourceServer((oauth2) ->
+                        oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
-
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -33,12 +37,13 @@ public class SecurityConfig {
                         .title("Product API")
                         .version("1.0")
                         .description("Documentation Product API v1.0"))
+                // Add base URLs to the OpenAPI documentation
                 .addServersItem(new Server().url("/product").description("GATEWAY"));
     }
 }
 
     /*
-    En caso de usar el gateway de enrutador, se debe habilitar el CORS
+    In case of CORS issues, you can add the following configuration to the SecurityConfig class:
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

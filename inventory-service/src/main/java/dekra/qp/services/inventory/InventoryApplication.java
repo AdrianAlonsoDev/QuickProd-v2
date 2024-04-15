@@ -9,6 +9,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * Main class for the inventory service
+ */
 @SpringBootApplication
 @EnableFeignClients
 @EnableCaching

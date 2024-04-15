@@ -1,37 +1,43 @@
 package dekra.qp.services.product.controller;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 import dekra.qp.services.product.model.Product;
 import dekra.qp.services.product.repository.ProductRepository;
 import dekra.qp.services.product.tax.TaxAuxService;
-import dekra.qp.services.product.tax.TaxCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller for the product service
+ * Must verify again the security configuration
+ */
 @RestController
+@PreAuthorize("hasAuthority('SCOPE_manager')")
 public class ProductController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
-	
-	@Autowired
-	ProductRepository repository;
+
+	private final ProductRepository repository;
+	private final TaxAuxService productTaxService;
 
 	@Autowired
-	TaxAuxService taxAuxService;
+	public ProductController(ProductRepository repository, TaxAuxService productTaxService, TaxAuxService productTaxService1) {
+		this.repository = repository;
+        this.productTaxService = productTaxService1;
+    }
 
 	@GetMapping("/")
 	@Cacheable(value = "products")
 	public List<Product> findAll() {
 		LOGGER.info("Product find");
-
 		return repository.findAll();
 	}
 
@@ -39,7 +45,6 @@ public class ProductController {
 	public ResponseEntity<Product> findById(@PathVariable("id") Long id) {
 		LOGGER.info("Product find: id={}", id);
 		Optional<Product> product = repository.findById(id);
-
         return product.map(ResponseEntity::ok)
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
@@ -83,9 +88,6 @@ public class ProductController {
 		Product product = repository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
 		repository.delete(product);
 	}
-
-	@Autowired
-	private TaxAuxService productTaxService;
 
 	@GetMapping("/{id}/priceWithTax")
 	public String getProductPriceWithTax(@PathVariable Long id) {

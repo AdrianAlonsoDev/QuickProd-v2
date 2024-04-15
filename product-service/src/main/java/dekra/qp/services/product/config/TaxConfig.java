@@ -6,6 +6,10 @@ import dekra.qp.services.product.tax.impl.TaxCalculatorIVA;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+/**
+ * Configuration class for the tax calculator
+ */
 @Configuration
 public class TaxConfig {
 

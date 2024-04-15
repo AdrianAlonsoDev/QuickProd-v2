@@ -10,23 +10,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasAuthority('SCOPE_manager')")
 public class CategoryController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
 
-	@Autowired
-	CategoryRepository repository;
+	private final CategoryRepository repository;
+
+	private final ProductClient productClient;
+
+	private final CacheAuxService cacheAuxService;
 
 	@Autowired
-	ProductClient productClient;
-
-	@Autowired
-	private CacheAuxService cacheAuxService;
+	public CategoryController(CategoryRepository repository, ProductClient productClient, CacheAuxService cacheAuxService) {
+		this.repository = repository;
+		this.productClient = productClient;
+		this.cacheAuxService = cacheAuxService;
+	}
 
 	@GetMapping("/")
 	@Cacheable("allCategories")

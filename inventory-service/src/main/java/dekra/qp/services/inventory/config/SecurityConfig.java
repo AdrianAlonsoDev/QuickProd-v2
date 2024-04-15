@@ -2,8 +2,6 @@ package dekra.qp.services.inventory.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +16,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    /**
+     * Configure the HttpSecurity to authorize all requests
+     * and validate the JWT token
+     */
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated())
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -26,15 +35,7 @@ public class SecurityConfig {
                         .title("Inventory API")
                         .version("1.0")
                         .description("Documentation Inventory API v1.0"))
-                // Añade la URL base del servicio a Swagger UI
+                // Add base URLs to the OpenAPI documentation
                 .addServersItem(new Server().url("/inventory").description("GATEWAY"));
-        // Añade bearerAuth a Swagger UI para probar los endpoints protegidos
-                /*.addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-                .components(new io.swagger.v3.oas.models.Components()
-                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
-                                .name("bearerAuth")
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")));*/
-    }
+            }
 }

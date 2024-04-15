@@ -1,6 +1,5 @@
 package dekra.qp.services.product.performance;
 
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -8,13 +7,28 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+/**
+ * Aspect to monitor the execution time of the methods
+ * and log the execution time in different levels depending on the elapsed time
+ */
 @Aspect
 @Component
 public class MethodMonitoring {
     private static final Logger logger = LoggerFactory.getLogger(MethodMonitoring.class);
-    private static final long WARNING_THRESHOLD_MS = 35;
-    private static final long ERROR_THRESHOLD_MS = 2000;
+    enum LogLevel {
+        INFO, WARN, ERROR
+    }
 
+    private static final long WARNING_THRESHOLD_MS = 35;
+    private static final long ERROR_THRESHOLD_MS = 1000;
+
+
+    /**
+     * Logs the execution time of the methods
+     * @param joinPoint the join point at which the method is being executed
+     * @return the result of the method
+     * @throws Throwable if an error occurs
+     */
     @Around("execution(public * dekra.qp.services.product.*.*.*(..))")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
@@ -23,10 +37,6 @@ public class MethodMonitoring {
 
         logMethodExecution(joinPoint, elapsedTime);
         return result;
-    }
-
-    enum LogLevel {
-        INFO, WARN, ERROR
     }
 
     private LogLevel determineLogLevel(long elapsedTime) {

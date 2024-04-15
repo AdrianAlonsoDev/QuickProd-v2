@@ -1,6 +1,5 @@
 package dekra.qp.services.inventory.performance;
 
-import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -8,6 +7,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+/**
+ * Aspect for monitoring method execution time
+ */
 @Aspect
 @Component
 public class MethodMonitoring {

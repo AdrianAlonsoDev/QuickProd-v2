@@ -11,10 +11,23 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    /**
+     * Configure the HttpSecurity to authorize all requests
+     * and validate the JWT token
+     */
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated())
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+        return http.build();
+    }
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -23,15 +36,7 @@ public class SecurityConfig {
                         .title("Category API")
                         .version("1.0")
                         .description("Documentation Category API v1.0"))
-                // Añade la URL base del servicio a Swagger UI
+                // Add base URLs to the OpenAPI documentation
                 .addServersItem(new Server().url("/category").description("GATEWAY"));
-        // Añade bearerAuth a Swagger UI para probar los endpoints protegidos
-                /*.addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
-                .components(new io.swagger.v3.oas.models.Components()
-                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
-                                .name("bearerAuth")
-                                .type(SecurityScheme.Type.HTTP)
-                                .scheme("bearer")
-                                .bearerFormat("JWT")));*/
     }
 }

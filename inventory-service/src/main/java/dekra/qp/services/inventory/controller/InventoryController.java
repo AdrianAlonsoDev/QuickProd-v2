@@ -12,24 +12,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import dekra.qp.services.inventory.model.Inventory;
 import dekra.qp.services.inventory.repository.InventoryRepository;
 
+/**
+ * Controller for the inventory service
+ * Must verify again the security configuration
+ */
 @RestController
+@PreAuthorize("hasAuthority('SCOPE_manager')")
 public class InventoryController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(InventoryController.class);
 	
-	@Autowired
 	InventoryRepository repository;
-	@Autowired
 	CategoryClient categoryClient;
-	@Autowired
 	ProductClient productClient;
-	@Autowired
 	CacheAuxService cacheAuxService;
+
+	@Autowired
+	public InventoryController(InventoryRepository repository, CategoryClient categoryClient, ProductClient productClient, CacheAuxService cacheAuxService) {
+		this.repository = repository;
+		this.categoryClient = categoryClient;
+		this.productClient = productClient;
+		this.cacheAuxService = cacheAuxService;
+	}
 	
 	@GetMapping("/")
 	@Cacheable("allInventories")

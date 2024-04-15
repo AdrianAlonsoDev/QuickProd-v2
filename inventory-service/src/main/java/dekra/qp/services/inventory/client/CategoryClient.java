@@ -9,13 +9,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import dekra.qp.services.inventory.dto.CategoryDTO;
 
+/**
+ *  This interface is used to define the methods that will
+ *  be used to communicate with the category-service
+ */
 @FeignClient(name = "category-service", configuration = { FeignClientConfig.class })
 public interface CategoryClient {
 
 	@GetMapping("/inventory/{inventoryId}")
-	public List<CategoryDTO> findByInventory(@PathVariable("inventoryId") Long inventoryId);
+    List<CategoryDTO> findByInventory(@PathVariable("inventoryId") Long inventoryId);
 	
 	@GetMapping("/inventory/{inventoryId}/with-products")
-	public List<CategoryDTO> findByInventoryWithProducts(@PathVariable("inventoryId") Long inventoryId);
+    List<CategoryDTO> findByInventoryWithProducts(@PathVariable("inventoryId") Long inventoryId);
 	
 }
