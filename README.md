@@ -1,5 +1,5 @@
 ## DEKRA-QP 🚀
-## QuickProd facilita manejar y maximizar la eficiencia en la gestión de productos en diferentes contextos.
+## QuickProd facilita el manejo y maximiza la eficiencia en la gestión de productos en diferentes contextos.
 *(Desarrollado para la prueba técnica DEKRA)*
 
 ## Que permite QuickProd? ⚡
