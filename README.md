@@ -15,7 +15,7 @@ La arquitectura está diseñada para ser escalable, segura y eficiente, con un s
 <p align="center">
   <img width="410" height="400" src="https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f">
   </br>
-  Keycloack para autenticación, Zipkin para capturar trazas, propagación de autenticación con TokenRelay.
+  Keycloack para autenticación, Zipkin capturador de trazas, propagación de autenticación con TokenRelay.
 </br>
 </p>
 
@@ -32,8 +32,8 @@ La arquitectura está diseñada para ser escalable, segura y eficiente, con un s
 - **Tecnologías**: Spring Cloud Netflix Eureka.
 
 #### Gateway Service
-- **Proposito**: Actúa como un punto de entrada unificado para los servicios. Ayuda del [LoadBalancer](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-mvc/filters/loadbalancer.html) automático de servicios registrados en la configuración
-- **Tecnologías**: Spring Cloud Gateway, OAuth2, Keycloack, Spring Boot.
+- **Proposito**: Actúa como un punto de entrada unificado para los servicios.
+- **Tecnologías**: Spring Cloud Gateway, OAuth2, Keycloack, [LoadBalancer](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-mvc/filters/loadbalancer.html) Spring Boot.
 
 ### Product Service
 - **Proposito**: Maneja las operaciones relacionadas con productos, almacenando los datos en cache con Redis.
