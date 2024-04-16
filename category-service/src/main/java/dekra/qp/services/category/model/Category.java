@@ -27,6 +27,7 @@ public class Category implements Serializable  {
 	private List<ProductDTO> products = new ArrayList<>();
 
 	public Category(Long inventoryId, String name) {
+    super();
 		this.inventoryId = inventoryId;
 		this.name = name;
 	}
