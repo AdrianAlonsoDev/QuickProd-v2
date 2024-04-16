@@ -25,34 +25,18 @@ public class ProductApplication {
 	@Bean
 	public CommandLineRunner demo(ProductRepository repository) {
 		return (args) -> {
-
-			Random random = new Random();
-
-		List<Long> inventoryIds = List.of(1L, 2L);
-		List<Long> categoryIds = List.of(1L, 1L, 2L, 3L, 4L);
-		List<String> productNames = List.of("Nike Airforce", "Adidas Runners", "Adidas Lightspeed",
-				"Reebok Runners", "Northface basic", "Basic fit",
-				"CK SPECIAL", "Adidas MEGA", "Reebok Comfort",
-				"Rolex Submarine", "CK Silver wristband");
-		List<String> descriptions = List.of("Special edition for collectors", "Super light edition for runners",
-				"Specific design fit", "Casual style", "Super comfortable",
-				"Special edition Calvin Klein", "Easy to wear", "Rolex newest watch edition",
-				"CK silver wristband");
-		List<Double> prices = List.of(50.90, 60.50, 85.99, 39.15, 19.99, 14.15, 119.50, 34.55, 30.80, 4999.50, 230.10);
-
-		// Populate the database with random products
-		int numberOfProductsToPopulate = 10;
-
-		for (int i = 0; i < numberOfProductsToPopulate; i++) {
-			Long inventoryId = inventoryIds.get(random.nextInt(inventoryIds.size()));
-			Long categoryId = categoryIds.get(random.nextInt(categoryIds.size()));
-			String productName = productNames.get(random.nextInt(productNames.size()));
-			String description = descriptions.get(random.nextInt(descriptions.size()));
-			double price = prices.get(random.nextInt(prices.size()));
-
-			repository.save(new Product(inventoryId, categoryId, productName, price, description));
-		}
-	};
+			repository.save(new Product(1L, 1L, "Nike Airforce", 50.90,  "Special edition for collectors"));
+			repository.save(new Product(1L, 1L, "Adidas Runners", 60.50, "Special edition for collectors"));
+			repository.save(new Product(1L, 1L, "Adidas Lightspeed", 85.99, "Super light edition for runners"));
+			repository.save(new Product(1L, 1L, "Reebok Runners", 39.15, "Specific design fit"));
+			repository.save(new Product(1L, 2L, "Northface basic", 19.99, "Casual style"));
+			repository.save(new Product(1L, 2L, "Basic fit", 14.15, "Super comfortable"));
+			repository.save(new Product(2L, 3L, "CK SPECIAL", 119.50, "Special edition Calvin Klein"));
+			repository.save(new Product(2L, 3L, "Adidas MEGA", 34.55, "Easy to wear"));
+			repository.save(new Product(2L, 3L, "Reebok Comfort", 30.80, "Super light"));
+			repository.save(new Product(2L, 4L, "Rolex Submarine", 4999.50, "Rolex newest watch edition"));
+			repository.save(new Product(2L, 4L, "CK Silver wristband", 230.10, "CK silver wristband"));
+		};
 	}
 	
 }
