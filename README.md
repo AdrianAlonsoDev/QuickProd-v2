@@ -1,48 +1,56 @@
-## DEKRA-QP 🚀
-## QuickProd facilita el manejo y maximiza la eficiencia en la gestión de productos en diferentes contextos.
+# DEKRA-QP 🚀
+## QuickProd simplifica la gestión y maximiza la eficiencia en la administración de productos en diversos contextos.
 *(Desarrollado para la prueba técnica DEKRA)*
 
-## Que permite QuickProd? ⚡
+# ¿Que permite QuickProd? ⚡
 Permite combinar los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
 
 Está estructurado como una arquitectura de microservicios utilizando Spring Boot, con servicios para manejar diferentes aspectos de dominio como productos, categorías y gestión de inventario.
 
-La arquitectura está diseñada para ser escalable, segura y eficiente, con un servidor de configuración central, un servidor de descubrimiento para el registro de servicios y una puerta de enlace API que dirige a los diferentes servicios.
+La arquitectura está diseñada para ser escalable, segura y eficiente, con un servidor de configuración central, un servidor de descubrimiento para el registro de servicios y una puerta de enlace API que dirige a los diferentes servicios e implementa autentificacion con Keycloack.
 
-## Project Architecture
+## 🎥 [Demostraciones de Quickprod en directo](https://github.com/AdrianAlonsoDev/dekra-qp/wiki/Inicio#demostraciones)
+
+# Architecture diagram
 <p align="center">
-  <img width="510" height="500" src="https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f">
+  <img width="410" height="400" src="https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f">
   </br>
-  Application Diagram
+  Keycloack para autenticación, Zipkin para capturar trazas, propagación de autenticación con TokenRelay.
 </br>
 </p>
 
-El proyecto está estructurado en múltiples servicios, cada uno hubicado en su propio subdirectorio dentro del repositorio principal. Los servicios incluidos son:
+## System Architecture
 
-- ### Service Discovery (discovery-service):
-  Utiliza [Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html) para el registro y la localización de servicios en nuestra infraestructura.
-- ### API Gateway (gateway-service):
-  * Actúa como un punto de entrada unificado para los servicios.
-  * Todas las solicitudes de los endpoints a cada servicio provienen del gateway, protegiéndo los demás servicios tras esta capa.
-  * Utilizamos la propagacion del token desde el gateway hasta el resto de servicios.
-  * Ayuda del [LoadBalancer](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-mvc/filters/loadbalancer.html) automático de servicios registrados en la configuración (Sección routes en [gateway-service.yml](https://github.com/AdrianAlonsoDev/dekra-qp/blob/main/config-service/src/main/resources/config/gateway-service.yml).
-  (localhost:8060/serviceName/**)
-  * Utiliza Keycloack para la autentificación de usuarios con manejo sobre SCOPES de clientes.
-- ### Config Service (config-service):
-  * Gestiona la configuración externa de los servicios con Spring Cloud Config.
-  * Todas las configuraciones se cargan desde la carpeta [config](https://github.com/AdrianAlonsoDev/dekra-qp/tree/main/config-service/src/main/resources/config).
-- ### Product Service (product-service):
-  Maneja las operaciones relacionadas con productos, almacenando los datos en cache con Redis. Pese a que contiene ID de category e inventory, no habrá problema por iniciarlo individualmente.
-- ### Category Service (category-service):
-  Encargado de las operaciones relacionadas con categorías de productos, también con caché en Redis.
-- ### Inventory Service (inventory-service):
-  Controla las funcionalidades relacionadas con el inventario o werehouses
+### Descripcion de los Servicios
 
-Todos los servicios tienen sus responsabilidades separadas, excepto en algún posible usecase por corregir, funcionarán individualmente.
+#### Config Service
+- **Proposito**: Permite onfiguración centralizada que utiliza Spring Cloud Config para gestionar todas las configuraciones de los microservicios.
+- **Tecnologías**: Spring Cloud Config, Spring Boot.
+
+#### Discovery Service
+- **Proposito**: Utiliza [Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html) para el registro y la localización de servicios en nuestra infraestructura.
+- **Tecnologías**: Spring Cloud Netflix Eureka.
+
+#### Gateway Service
+- **Proposito**: Actúa como un punto de entrada unificado para los servicios. Ayuda del [LoadBalancer](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-mvc/filters/loadbalancer.html) automático de servicios registrados en la configuración
+- **Tecnologías**: Spring Cloud Gateway, OAuth2, Keycloack, Spring Boot.
+
+### Product Service
+- **Proposito**: Maneja las operaciones relacionadas con productos, almacenando los datos en cache con Redis.
+- **Tecnologías**: Spring Data JPA, Spring Starter Redis para almacenar en cache, Spring Cloud OpenFeign para comunicación entre servicios.
+
+### Category Service
+- **Proposito**: Encargado de las operaciones relacionadas con categorías de productos, Redis para caché, OpenFeign.
+- **Tecnologías**: Spring Boot, Spring Data JPA, Spring Cloud OpenFeign para comunicación entre servicios.
+- 
+### Inventory Service
+- **Proposito**: Encargado de las operaciones relacionadas con categorías de productos, Redis para caché, OpenFeign.
+- **Tecnologías**: Spring Boot, Spring Data JPA, Spring Cloud OpenFeign para comunicación entre servicios.
+
 Utilizamos [FeignClients](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-feign.html) para la inter comunicación de los servicios.
 
 ## Installation 🛠️
-- Instalar Docker y Docker Compose para levantar: Keycloack, Redis, ZIPKIN
+- Instalar Docker y Docker Compose para levantar instancias de Keycloack, Redis, ZIPKIN
 - JDK 17
 
 ## Run the project
@@ -57,11 +65,11 @@ Para ejecutar el proyecto, sigue estos pasos:
       1. Config Service
       2. Discovery Service
       3. Gateway Service
-      4. Product Service, Category Service, Inventory Service (Da igual el orden)
+      4. (Product Service, Category Service, Inventory Service)
 
 4. Conectate al frontend del Gateway en la siguiente URL:
     - `http://localhost:8060/`
-Le redirigirle automáticamente a la interfaz de Keycloack para autenticarse.
+Le redirigira automáticamente a la interfaz de Keycloack para autenticarse con el cliente de.
     - Usuario: dekra
     - Contraseña: dekra
 Tras una autentificación satisfactoria, le redirigirá nuevamente a la ruta del GATEWAY,
@@ -80,7 +88,7 @@ Lista de contenedores:
 -  dekra-redis (Almacenamiento en cache)
 -  dekra-zipkin (Evaluar las trazas)
 
-![Captura de pantalla 2024-04-15 121147](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/d6322037-4e9a-415a-9faa-00e4338eda3e)
+![containerlist](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/d6322037-4e9a-415a-9faa-00e4338eda3e)
 
 
 #### Acceder a los contenedores
@@ -103,8 +111,3 @@ Roadmap:
 dinámica, es decir, que se pueda filtrar por cualquier propiedad del producto de forma dinámica.
 
 En proceso de documentar mis decisiones de arquitectura, problemas encontrados y soluciones aplicadas, junto con todas las referencias que utilicé para construir el proyecto. STAND BY
-#### Algunos ejemplos mientras termino de documentar todo...
-
-![keycloacklogin](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/e2c876bc-ede8-424f-9e28-be0c59a6e9a1)
-
-![Animation](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/8eddc627-5042-4598-ab98-156d390847b1)
