@@ -1,29 +1,36 @@
 ## DEKRA-QP 🚀
-## QuickProd es una suite de servicios que permite maximizar la eficiencia en la gestión de productos en diferentes contextos.
-(Desarrollado para la prueba técnica de DEKRA)
+## QuickProd facilita el manejo y maximiza la eficiencia en la gestión de productos en diferentes contextos.
+*(Desarrollado para la prueba técnica DEKRA)*
 
-## What is this? 🏃
-QuickProd combina los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
-Ha sido diseñada para facilitar la expansión y mantenimiento al segregarse en servicios distintos, cada uno con su responsabilidad específica dentro de la arquitectura global.
+## Que permite QuickProd? ⚡
+Permite combinar los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
 
+Está estructurado como una arquitectura de microservicios utilizando Spring Boot, con servicios para manejar diferentes aspectos de dominio como productos, categorías y gestión de inventario.
 
-## Project Architechture
-![Captura de pantalla 2024-04-15 120255](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f)
+La arquitectura está diseñada para ser escalable, segura y eficiente, con un servidor de configuración central, un servidor de descubrimiento para el registro de servicios y una puerta de enlace API que dirige a los diferentes servicios.
+
+## Project Architecture
+<p align="center">
+  <img width="510" height="500" src="https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/2b14cd2c-b7b5-45c1-97c9-14358c4c816f">
+  </br>
+  Application Diagram
+</br>
+</p>
 
 El proyecto está estructurado en múltiples servicios, cada uno hubicado en su propio subdirectorio dentro del repositorio principal. Los servicios incluidos son:
 
 - ### Service Discovery (discovery-service):
-  Utiliza [Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html) para el registro y la localización de servicios dentro de la infraestructura de microservicios.
+  Utiliza [Eureka Server](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-eureka-server.html) para el registro y la localización de servicios en nuestra infraestructura.
 - ### API Gateway (gateway-service):
-  * Actúa como un punto de entrada unificado para los servicio.
+  * Actúa como un punto de entrada unificado para los servicios.
   * Todas las solicitudes de los endpoints a cada servicio provienen del gateway, protegiéndo los demás servicios tras esta capa.
-  * Utilizamos propagacion del token desde el gateway hasta el resto de servicios.
-  * Ayuda del LB automático de servicios que estén registrados en la configuración (Sección routes en [gateway-service.yml](https://github.com/AdrianAlonsoDev/dekra-qp/blob/main/config-service/src/main/resources/config/gateway-service.yml).
+  * Utilizamos la propagacion del token desde el gateway hasta el resto de servicios.
+  * Ayuda del [LoadBalancer](https://docs.spring.io/spring-cloud-gateway/reference/spring-cloud-gateway-server-mvc/filters/loadbalancer.html) automático de servicios registrados en la configuración (Sección routes en [gateway-service.yml](https://github.com/AdrianAlonsoDev/dekra-qp/blob/main/config-service/src/main/resources/config/gateway-service.yml).
   (localhost:8060/serviceName/**)
-  Utiliza Keycloack para la autentificación de usuarios y el manejo de SCOPES de clientes.
+  * Utiliza Keycloack para la autentificación de usuarios con manejo sobre SCOPES de clientes.
 - ### Config Service (config-service):
-  Gestiona la configuración externa de los servicios con Spring Cloud Config.
-  Todas las configuraciones se cargan desde la carpeta ["config"](https://github.com/AdrianAlonsoDev/dekra-qp/tree/main/config-service/src/main/resources/config) dentro del servicio config.
+  * Gestiona la configuración externa de los servicios con Spring Cloud Config.
+  * Todas las configuraciones se cargan desde la carpeta [config](https://github.com/AdrianAlonsoDev/dekra-qp/tree/main/config-service/src/main/resources/config).
 - ### Product Service (product-service):
   Maneja las operaciones relacionadas con productos, almacenando los datos en cache con Redis. Pese a que contiene ID de category e inventory, no habrá problema por iniciarlo individualmente.
 - ### Category Service (category-service):
@@ -34,8 +41,6 @@ El proyecto está estructurado en múltiples servicios, cada uno hubicado en su 
 Todos los servicios tienen sus responsabilidades separadas, excepto en algún posible usecase por corregir, funcionarán individualmente.
 Utilizamos [FeignClients](https://cloud.spring.io/spring-cloud-netflix/multi/multi_spring-cloud-feign.html) para la inter comunicación de los servicios.
 
-![Captura de pantalla 2024-04-15 120942](https://github.com/AdrianAlonsoDev/dekra-qp/assets/6146371/3858e1fc-4f70-4b9a-98d2-87fc259193e9)
-
 ## Installation 🛠️
 - Instalar Docker y Docker Compose para levantar: Keycloack, Redis, ZIPKIN
 - JDK 17
@@ -43,11 +48,16 @@ Utilizamos [FeignClients](https://cloud.spring.io/spring-cloud-netflix/multi/mul
 ## Run the project
 Para ejecutar el proyecto, sigue estos pasos:
 
-1. Dentro de la carpeta de docker, ejecuta el siguiente comando:
+1. Dentro del directorio 'docker', lanza el comando
     - `docker-compose up --build -d`
+    - Revisa el inicio correcto de cada container con el prefijo 'dekra-'
 
-2. Ahora ejecuta cada servicio Spring Boot con el siguiente comando:
+2. Ahora ejecuta los servicios en el siguiente orden:
     - `mvn spring-boot:run`
+      1. Config Service
+      2. Discovery Service
+      3. Gateway Service
+      4. Product Service, Category Service, Inventory Service (Da igual el orden)
 
 4. Conectate al frontend del Gateway en la siguiente URL:
     - `http://localhost:8060/`
@@ -56,7 +66,13 @@ Le redirigirle automáticamente a la interfaz de Keycloack para autenticarse.
     - Contraseña: dekra
 Tras una autentificación satisfactoria, le redirigirá nuevamente a la ruta del GATEWAY,
 protegiendo así el resto de servicios.
-
+4. Si lo necesitas, accede al panel de administrador de keycloack desde la siguiente Url:
+    - `http://localhost:8080/`
+Le redirigirle automáticamente a la interfaz admin de Keycloack.
+    - Usuario: admin
+    - Contraseña: admin
+Tras una autentificación satisfactoria, le redirigirá nuevamente a la ruta del GATEWAY,
+protegiendo así el resto de servicios.
 
 ## Docker Utils 🐳
 Lista de contenedores:
