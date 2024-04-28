@@ -1,6 +1,5 @@
-# DEKRA-QP 🚀
+# QuickProd-v2 🚀
 ## QuickProd simplifica la gestión y maximiza la eficiencia en la administración de productos en diversos contextos.
-*(Desarrollado para la prueba técnica DEKRA)*
 
 # ¿Que permite QuickProd? ⚡
 Permite combinar los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
