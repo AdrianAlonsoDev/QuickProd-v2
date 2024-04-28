@@ -1,5 +1,6 @@
 # QuickProd-v2 🚀
 ## QuickProd simplifica la gestión y maximiza la eficiencia en la administración de productos en diversos contextos.
+#### Checkout [QP-v1](https://github.com/AdrianAlonsoDev/QuickProd) (Repo de aprendizaje para desarrollar la Version v2)
 
 # ¿Que permite QuickProd? ⚡
 Permite combinar los elementos y recursos más utilizados, permitiendonos así tener una suite de microservicios diseñada para proporcionar funcionalidades escalables y distribuidas para la gestión de productos, categorías e inventarios.
